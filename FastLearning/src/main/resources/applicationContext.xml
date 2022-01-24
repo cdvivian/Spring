@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+
+       xmlns:p="http://www.springframework.org/schema/p"
+
+
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+<!--<bean id="UserDao" class="com.cd.Impl.UserDaoImpl" scope="singleton" init-method="init" destroy-method="destroy"></bean>-->
+<bean id="UserDao" class="com.cd.Impl.UserDaoImpl" scope="singleton" >
+<!--试验基本数据类型注入    <property name="gender" value="男"></property>-->
+<!--    <property name="age" value="18"></property>-->
+<!--集合注入-->
+    <property name="stringList">
+        <list>
+            <value>123</value>
+            <value>152</value>
+            <value>125</value>
+            <value>199</value>
+        </list>
+    </property>
+    <property name="userMap">
+        <map>
+            <entry key="user1" value-ref="user"></entry>
+            <entry key="user2" value-ref="user2"></entry>
+        </map>
+    </property>
+    <property name="properties">
+        <props>
+            <prop key="1">aaa</prop>
+            <prop key="2">bbb</prop>
+        </props>
+    </property>
+</bean>
+    <bean id="user" class="com.cd.Domain.User">
+        <property name="name" value="画虎"></property>
+        <property name="addr" value="北京"></property>
+    </bean>
+    <bean id="user2" class="com.cd.Domain.User">
+        <property name="name" value="威威">
+        </property>
+        <property name="addr" value="重庆"></property>
+    </bean>
+<!--从工厂里用静态方法生成bean-->
+<!--    <bean id="UserDao" class="com.cd.Factory.StaticFactory" factory-method="getUserDao" ></bean>-->
+<!--工厂动态创建-->
+<!--    <bean id="factory" class="com.cd.Factory.DynamicFactory"></bean>-->
+<!--    <bean id="UserDao" factory-bean="factory" factory-method="getUserDao" >-->
+<!--        -->
+<!--    </bean>-->
+
+<!--  引用注入：set方法依赖注入  -->
+<!--<bean id="UserService" class="com.cd.Impl.UserServiceImpl">-->
+<!--    <property name="userDao" ref="UserDao"></property>-->
+<!--</bean>-->
+
+<!-- 引用注入：p命名空间方式创建依赖注入的service   -->
+<!--    <bean id="UserService" class="com.cd.Impl.UserServiceImpl" p:userDao-ref="UserDao">-->
+<!--    </bean>-->
+
+<!-- 引用注入：使用构造器依赖注入   -->
+    <bean id="UserService" class="com.cd.Impl.UserServiceImpl" >
+        <constructor-arg name="userDao" ref="UserDao"></constructor-arg>
+    </bean>
+
+    <import resource="applicationContext-user.xml"/>
+    <import resource="applicationContext-service.xml"/>
+</beans>
